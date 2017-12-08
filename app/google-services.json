@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "599006928175",
+    "firebase_url": "https://fir-realtimedb-41531.firebaseio.com",
+    "project_id": "fir-realtimedb-41531",
+    "storage_bucket": "fir-realtimedb-41531.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:599006928175:android:56bb8906d11bb9f2",
+        "android_client_info": {
+          "package_name": "com.victorminerva.app.firebaserealtimedb"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "599006928175-e1p9s7ab2hgbs4upu5kn5oo29ekg65ed.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.victorminerva.app.firebaserealtimedb",
+            "certificate_hash": "1226f4558b5f55c2a3799c54b7d2126b05ef302e"
+          }
+        },
+        {
+          "client_id": "599006928175-hetsc4kpgjh14333rpnu649mubsft7iu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCuZyYNbhv3CI8oVhjfh6wi9tZ_ubjhCAY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "599006928175-hetsc4kpgjh14333rpnu649mubsft7iu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
