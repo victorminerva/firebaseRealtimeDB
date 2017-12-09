@@ -1,8 +1,10 @@
 package com.victorminerva.app.firebaserealtimedb.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.ListView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -11,6 +13,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.victorminerva.app.firebaserealtimedb.R;
+import com.victorminerva.app.firebaserealtimedb.adapter.ItemFavoredAdapter;
 import com.victorminerva.app.firebaserealtimedb.adapter.ItemLoanAdapter;
 import com.victorminerva.app.firebaserealtimedb.model.Favored;
 import com.victorminerva.app.firebaserealtimedb.model.Loan;
@@ -28,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference favoredCloudEndPoint;
     private ListView listOfLoans;
     private ItemLoanAdapter adapter;
+    private ItemFavoredAdapter favoredAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,31 +43,22 @@ public class MainActivity extends AppCompatActivity {
         loanCloudEndPoint = mDatabase.child("loans");
 
         listOfLoans = findViewById(R.id.listLoans);
+        findViewById(R.id.fab_main).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, NewFavoredActivity.class);
+                startActivity(intent);
+            }
+        });
 
         //addInitialDataToFirebase();
 
         /** List of loans retrieves */
         final List<Loan> mLoans = new ArrayList<>();
-        loanCloudEndPoint.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                showData(dataSnapshot, mLoans);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.d(LOG_TAG, databaseError.getMessage());
-            }
-        });
-
-
-        /** List of favoreds */
-//        final List<Favored> mFavoreds = new ArrayList<>();
-//        favoredCloudEndPoint.addValueEventListener(new ValueEventListener() {
+//        loanCloudEndPoint.addValueEventListener(new ValueEventListener() {
 //            @Override
 //            public void onDataChange(DataSnapshot dataSnapshot) {
-//                Favored favored = dataSnapshot.getValue(Favored.class);
-//                Log.d("LoanFavored: ", favored.toString());
+//                showData(dataSnapshot, mLoans);
 //            }
 //
 //            @Override
@@ -71,6 +66,21 @@ public class MainActivity extends AppCompatActivity {
 //                Log.d(LOG_TAG, databaseError.getMessage());
 //            }
 //        });
+
+
+        /** List of favoreds */
+        final List<Favored> mFavoreds = new ArrayList<>();
+        favoredCloudEndPoint.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                showFavoreds(dataSnapshot, mFavoreds);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(LOG_TAG, databaseError.getMessage());
+            }
+        });
     }
 
     private void showData(DataSnapshot dataSnapshot, List<Loan> mLoans) {
@@ -85,6 +95,18 @@ public class MainActivity extends AppCompatActivity {
         }
         adapter = new ItemLoanAdapter(mLoans, MainActivity.this);
         listOfLoans.setAdapter(adapter);
+    }
+
+    private void showFavoreds(DataSnapshot dataSnapshot, List<Favored> mFavoreds) {
+        mFavoreds.clear();
+        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+            Log.d("LoanFavored: ", snapshot.getKey());
+
+            Favored favored = snapshot.getValue(Favored.class);
+            mFavoreds.add(favored);
+        }
+        favoredAdapter = new ItemFavoredAdapter(mFavoreds, MainActivity.this);
+        listOfLoans.setAdapter(favoredAdapter);
     }
 
     public static List<Loan> getSampleLoans() {
